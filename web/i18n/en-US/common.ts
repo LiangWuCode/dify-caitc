@@ -528,7 +528,7 @@ const translation = {
       vectorHash: 'Vector hash:',
       hitScore: 'Retrieval Score:',
     },
-    inputPlaceholder: 'Talk to Bot',
+    inputPlaceholder: '和智擎AI对话',
   },
   promptEditor: {
     placeholder: 'Write your prompt word here, enter \'{\' to insert a variable, enter \'/\' to insert a prompt content block',
@@ -618,6 +618,12 @@ const translation = {
   },
   pagination: {
     perPage: 'Items per page',
+  },
+  internet: {
+    buttonTitle: '联网搜索',
+    questionTitle: '联网搜索：',
+    notAllowUpload: '联网搜索不允许上传附件',
+    notAllowInternet: '上传附件后不允许联网搜索',
   },
 }
 

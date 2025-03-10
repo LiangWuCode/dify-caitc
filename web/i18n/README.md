@@ -80,13 +80,13 @@ export const languages = [
   {
     value: 'en-US',
     name: 'English(United States)',
-    example: 'Hello, Dify!',
+    example: 'Hello, 智擎AI!',
     supported: true,
   },
   {
     value: 'zh-Hans',
     name: '简体中文',
-    example: '你好，Dify！',
+    example: '你好，智擎AI！',
     supported: true,
   },
   {

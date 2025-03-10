@@ -16,6 +16,7 @@ import {
 import Button from '@/app/components/base/button'
 import type { FileUpload } from '@/app/components/base/features/types'
 import cn from '@/utils/classnames'
+import { useToastContext } from '@/app/components/base/toast'
 
 type FileFromLinkOrLocalProps = {
   showFromLink?: boolean
@@ -48,7 +49,7 @@ const FileFromLinkOrLocal = ({
     handleLoadFileFromLink(url)
     setUrl('')
   }
-
+  const { notify } = useToastContext()
   return (
     <PortalToFollowElem
       placement='top'
@@ -56,7 +57,13 @@ const FileFromLinkOrLocal = ({
       open={open}
       onOpenChange={setOpen}
     >
-      <PortalToFollowElemTrigger onClick={() => setOpen(v => !v)} asChild>
+      <PortalToFollowElemTrigger onClick={() => {
+        if (fileConfig?.ClickDisabled) {
+          notify({ type: 'warning', message: t('common.internet.notAllowUpload') })
+          return
+        }
+        setOpen(v => !v)
+      }} asChild>
         {trigger(open)}
       </PortalToFollowElemTrigger>
       <PortalToFollowElemContent className='z-10'>

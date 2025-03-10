@@ -22,6 +22,7 @@ type OperationProps = {
   onShowVoiceInput?: () => void
   onSend: () => void
   theme?: Theme | null
+  clickDisabled?: boolean | false
 }
 const Operation = forwardRef<HTMLDivElement, OperationProps>(({
   fileConfig,
@@ -29,6 +30,7 @@ const Operation = forwardRef<HTMLDivElement, OperationProps>(({
   onShowVoiceInput,
   onSend,
   theme,
+  clickDisabled,
 }, ref) => {
   return (
     <div
@@ -41,7 +43,7 @@ const Operation = forwardRef<HTMLDivElement, OperationProps>(({
         ref={ref}
       >
         <div className='flex items-center space-x-1'>
-          {fileConfig?.enabled && <FileUploaderInChatInput fileConfig={fileConfig} />}
+          {fileConfig?.enabled && <FileUploaderInChatInput fileConfig={{ ...fileConfig, ClickDisabled: clickDisabled }} />}
           {
             speechToTextConfig?.enabled && (
               <ActionButton

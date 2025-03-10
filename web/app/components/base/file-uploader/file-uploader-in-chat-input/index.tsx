@@ -6,7 +6,7 @@ import {
   RiAttachmentLine,
 } from '@remixicon/react'
 import FileFromLinkOrLocal from '../file-from-link-or-local'
-import ActionButton from '@/app/components/base/action-button'
+import ActionButton, { ActionButtonState } from '@/app/components/base/action-button'
 import cn from '@/utils/classnames'
 import type { FileUpload } from '@/app/components/base/features/types'
 import { TransferMethod } from '@/types/app'
@@ -21,12 +21,13 @@ const FileUploaderInChatInput = ({
     return (
       <ActionButton
         size='l'
+        state={fileConfig?.ClickDisabled ? ActionButtonState.Default : ActionButtonState.Active}
         className={cn(open && 'bg-state-base-hover')}
       >
         <RiAttachmentLine className='w-5 h-5' />
       </ActionButton>
     )
-  }, [])
+  }, [fileConfig?.ClickDisabled])
 
   return (
     <FileFromLinkOrLocal

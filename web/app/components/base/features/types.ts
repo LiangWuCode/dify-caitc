@@ -5,6 +5,10 @@ export type EnabledOrDisabled = {
   enabled?: boolean
 }
 
+export type ClickDisabled = {
+  ClickDisabled?: boolean
+}
+
 export type MoreLikeThis = EnabledOrDisabled
 
 export type OpeningStatement = EnabledOrDisabled & {
@@ -40,7 +44,7 @@ export type FileUpload = {
   allowed_file_upload_methods?: TransferMethod[]
   number_limits?: number
   fileUploadConfig?: FileUploadConfigResponse
-} & EnabledOrDisabled
+} & EnabledOrDisabled & ClickDisabled
 
 export type AnnotationReplyConfig = {
   enabled: boolean

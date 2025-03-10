@@ -167,7 +167,7 @@ const translation = {
   account: {
     account: '账户',
     myAccount: '我的账户',
-    studio: 'Dify 工作室',
+    studio: '智擎AI 工作室',
     avatar: '头像',
     name: '用户名',
     email: '邮箱',
@@ -179,8 +179,8 @@ const translation = {
     newPassword: '新密码',
     notEqual: '两个密码不相同',
     confirmPassword: '确认密码',
-    langGeniusAccount: 'Dify 账号',
-    langGeniusAccountTip: '您的 Dify 账号和相关的用户数据。',
+    langGeniusAccount: '智擎AI 账号',
+    langGeniusAccountTip: '您的 智擎AI 账号和相关的用户数据。',
     editName: '编辑名字',
     showAppLength: '显示 {{length}} 个应用',
     delete: '删除账户',
@@ -528,7 +528,7 @@ const translation = {
       vectorHash: '向量哈希：',
       hitScore: '召回得分：',
     },
-    inputPlaceholder: '和机器人聊天',
+    inputPlaceholder: '和智擎AI对话',
   },
   promptEditor: {
     placeholder: '在这里写你的提示词，输入\'{\' 插入变量、输入\'/\' 插入提示内容块',
@@ -618,6 +618,12 @@ const translation = {
   },
   pagination: {
     perPage: '每页显示',
+  },
+  internet: {
+    buttonTitle: '联网搜索',
+    questionTitle: '联网搜索：',
+    notAllowUpload: '联网搜索不允许上传附件',
+    notAllowInternet: '上传附件后不允许联网搜索',
   },
 }
 

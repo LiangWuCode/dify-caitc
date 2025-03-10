@@ -6,6 +6,7 @@ import {
 import Textarea from 'rc-textarea'
 import { useTranslation } from 'react-i18next'
 import Recorder from 'js-audio-recorder'
+import { Switch } from '@headlessui/react'
 import type {
   EnableType,
   OnSend,
@@ -67,6 +68,9 @@ const ChatInputArea = ({
   const [query, setQuery] = useState('')
   const [showVoiceInput, setShowVoiceInput] = useState(false)
   const filesStore = useFileStore()
+  const [enabled, setEnabled] = useState(false)
+  const [clickDisabled, setClickDisabled] = useState(false)
+
   const {
     handleDragFileEnter,
     handleDragFileLeave,
@@ -95,7 +99,8 @@ const ChatInputArea = ({
         return
       }
       if (checkInputsForm(inputs, inputsForm)) {
-        onSend(query, files)
+        const finalQuery = `${enabled ? t('common.internet.questionTitle') + query : query}`
+        onSend(finalQuery, files)
         setQuery('')
         setFiles([])
       }
@@ -138,6 +143,16 @@ const ChatInputArea = ({
     })
   }, [t, notify])
 
+  const handleToggle = () => {
+    const { files } = filesStore.getState()
+    if (files.length > 0 && !enabled) {
+      notify({ type: 'warning', message: t('common.internet.notAllowInternet') })
+      return
+    }
+    setEnabled(!enabled)
+    setClickDisabled(prev => !prev)
+  }
+
   const operation = (
     <Operation
       ref={holdSpaceRef}
@@ -145,6 +160,7 @@ const ChatInputArea = ({
       speechToTextConfig={speechToTextConfig}
       onShowVoiceInput={handleShowVoiceInput}
       onSend={handleSend}
+      clickDisabled={clickDisabled}
       theme={theme}
     />
   )
@@ -158,7 +174,7 @@ const ChatInputArea = ({
         )}
       >
         <div className='relative px-[9px] pt-[9px] max-h-[158px] overflow-x-hidden overflow-y-auto'>
-          <FileListInChatInput fileConfig={visionConfig!} />
+          <FileListInChatInput fileConfig={visionConfig!}/>
           <div
             ref={wrapperRef}
             className='flex items-center justify-between'
@@ -210,8 +226,24 @@ const ChatInputArea = ({
             <div className='px-[9px]'>{operation}</div>
           )
         }
+        <div className="flex items-center space-x-4 ml-4 mt-2 mb-2">
+          <Switch
+            checked={enabled}
+            onChange={handleToggle}
+            className={`${enabled ? 'bg-blue-600' : 'bg-gray-200'}
+                    relative inline-flex h-5 w-10 items-center rounded-full`}
+          >
+            <span
+              className={`${
+                enabled ? 'translate-x-5' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            />
+          </Switch>
+          <span className={'text-gray-900'}>{t('common.internet.buttonTitle')}</span>
+        </div>
       </div>
-      {showFeatureBar && <FeatureBar showFileUpload={showFileUpload} disabled={featureBarDisabled} onFeatureBarClick={onFeatureBarClick} />}
+      {showFeatureBar && <FeatureBar showFileUpload={showFileUpload} disabled={featureBarDisabled}
+        onFeatureBarClick={onFeatureBarClick}/>}
     </>
   )
 }
