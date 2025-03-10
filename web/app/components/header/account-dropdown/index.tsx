@@ -2,22 +2,22 @@
 import { useTranslation } from 'react-i18next'
 import { Fragment, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useContext } from 'use-context-selector'
-import { RiArrowDownSLine, RiLogoutBoxRLine } from '@remixicon/react'
+import { useContext, useContextSelector } from 'use-context-selector'
+import { RiAccountCircleLine, RiArrowDownSLine, RiArrowRightUpLine, RiBookOpenLine, RiGithubLine, RiInformation2Line, RiLogoutBoxRLine, RiMap2Line, RiSettings3Line, RiStarLine } from '@remixicon/react'
 import Link from 'next/link'
 import { Menu, Transition } from '@headlessui/react'
 import AccountAbout from '../account-about'
-import { mailToSupport } from '../utils/util'
-import WorkplaceSelector from './workplace-selector'
+import GithubStar from '../github-star'
+import Support from './support'
+import Compliance from './compliance'
 import classNames from '@/utils/classnames'
 import I18n from '@/context/i18n'
 import Avatar from '@/app/components/base/avatar'
 import { logout } from '@/service/common'
-import { useAppContext } from '@/context/app-context'
-import { ArrowUpRight } from '@/app/components/base/icons/src/vender/line/arrows'
+import AppContext, { useAppContext } from '@/context/app-context'
 import { useModalContext } from '@/context/modal-context'
-import { useProviderContext } from '@/context/provider-context'
-import { Plan } from '@/app/components/billing/type'
+import { LicenseStatus } from '@/types/feature'
+import { IS_CLOUD_EDITION } from '@/config'
 
 export type IAppSelector = {
   isMobile: boolean
@@ -25,18 +25,17 @@ export type IAppSelector = {
 
 export default function AppSelector({ isMobile }: IAppSelector) {
   const itemClassName = `
-    flex items-center w-full h-9 px-3 text-text-secondary system-md-regular
-    rounded-lg hover:bg-state-base-hover cursor-pointer
+    flex items-center w-full h-9 pl-3 pr-2 text-text-secondary system-md-regular
+    rounded-lg hover:bg-state-base-hover cursor-pointer gap-1
   `
   const router = useRouter()
   const [aboutVisible, setAboutVisible] = useState(false)
+  const systemFeatures = useContextSelector(AppContext, v => v.systemFeatures)
 
   const { locale } = useContext(I18n)
   const { t } = useTranslation()
-  const { userProfile, langeniusVersionInfo } = useAppContext()
+  const { userProfile, langeniusVersionInfo, isCurrentWorkspaceOwner } = useAppContext()
   const { setShowAccountSettingModal } = useModalContext()
-  const { plan } = useProviderContext()
-  const canEmailSupport = plan.type === Plan.professional || plan.type === Plan.team || plan.type === Plan.enterprise
 
   const handleLogout = async () => {
     await logout({
@@ -61,15 +60,15 @@ export default function AppSelector({ isMobile }: IAppSelector) {
                 className={`
                     inline-flex items-center
                     rounded-[20px] py-1 pr-2.5 pl-1 text-sm
-                  text-gray-700 hover:bg-gray-200
+                  text-text-secondary hover:bg-state-base-hover
                     mobile:px-1
-                    ${open && 'bg-gray-200'}
+                    ${open && 'bg-state-base-hover'}
                   `}
               >
                 <Avatar avatar={userProfile.avatar_url} name={userProfile.name} className='sm:mr-2 mr-0' size={32} />
                 {!isMobile && <>
                   {userProfile.name}
-                  <RiArrowDownSLine className="w-3 h-3 ml-1 text-gray-700" />
+                  <RiArrowDownSLine className="w-3 h-3 ml-1 text-text-tertiary" />
                 </>}
               </Menu.Button>
               <Transition
@@ -89,48 +88,37 @@ export default function AppSelector({ isMobile }: IAppSelector) {
                   "
                 >
                   <Menu.Item disabled>
-                    <div className='flex flex-nowrap items-center px-4 py-[13px]'>
-                      <Avatar avatar={userProfile.avatar_url} name={userProfile.name} size={36} className='mr-3' />
+                    <div className='flex flex-nowrap items-center pl-3 pr-2 py-[13px]'>
                       <div className='grow'>
                         <div className='system-md-medium text-text-primary break-all'>{userProfile.name}</div>
                         <div className='system-xs-regular text-text-tertiary break-all'>{userProfile.email}</div>
                       </div>
+                      <Avatar avatar={userProfile.avatar_url} name={userProfile.name} size={36} className='mr-3' />
                     </div>
                   </Menu.Item>
-                  <div className='px-1 py-1'>
-                    <div className='mt-2 px-3 text-xs font-medium text-text-tertiary'>{t('common.userProfile.workspace')}</div>
-                    <WorkplaceSelector />
-                  </div>
                   <div className="px-1 py-1">
                     <Menu.Item>
                       {({ active }) => <Link
-                        className={classNames(itemClassName, 'group justify-between',
+                        className={classNames(itemClassName, 'group',
                           active && 'bg-state-base-hover',
                         )}
                         href='/account'
                         target='_self' rel='noopener noreferrer'>
-                        <div>{t('common.account.account')}</div>
-                        <ArrowUpRight className='hidden w-[14px] h-[14px] text-text-tertiary group-hover:flex' />
+                        <RiAccountCircleLine className='size-4 flex-shrink-0 text-text-tertiary' />
+                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.account.account')}</div>
+                        <RiArrowRightUpLine className='size-[14px] flex-shrink-0 text-text-tertiary' />
                       </Link>}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => <div className={classNames(itemClassName,
                         active && 'bg-state-base-hover',
                       )} onClick={() => setShowAccountSettingModal({ payload: 'members' })}>
-                        <div>{t('common.userProfile.settings')}</div>
+                        <RiSettings3Line className='size-4 flex-shrink-0 text-text-tertiary' />
+                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.settings')}</div>
                       </div>}
                     </Menu.Item>
-                    {canEmailSupport && <Menu.Item>
-                      {({ active }) => <a
-                        className={classNames(itemClassName, 'group justify-between',
-                          active && 'bg-state-base-hover',
-                        )}
-                        href={mailToSupport(userProfile.email, plan.type, langeniusVersionInfo.current_version)}
-                        target='_blank' rel='noopener noreferrer'>
-                        <div>{t('common.userProfile.emailSupport')}</div>
-                        <ArrowUpRight className='hidden w-[14px] h-[14px] text-text-tertiary group-hover:flex' />
-                      </a>}
-                    </Menu.Item>}
+                  </div>
+                  <div className='p-1'>
                     {/* <Menu.Item> */}
                     {/*  {({ active }) => <Link */}
                     {/*    className={classNames(itemClassName, 'group justify-between', */}
@@ -196,12 +184,12 @@ export default function AppSelector({ isMobile }: IAppSelector) {
                   <Menu.Item>
                     {({ active }) => <div className='p-1' onClick={() => handleLogout()}>
                       <div
-                        className={
-                          classNames('flex items-center justify-between h-9 px-3 rounded-lg cursor-pointer group hover:bg-state-base-hover',
-                            active && 'bg-state-base-hover')}
+                        className={classNames(itemClassName, 'group justify-between',
+                          active && 'bg-state-base-hover',
+                        )}
                       >
-                        <div className='system-md-regular text-text-secondary'>{t('common.userProfile.logout')}</div>
-                        <RiLogoutBoxRLine className='hidden w-4 h-4 text-text-tertiary group-hover:flex' />
+                        <RiLogoutBoxRLine className='flex-shrink-0 size-4 text-text-tertiary' />
+                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.logout')}</div>
                       </div>
                     </div>}
                   </Menu.Item>

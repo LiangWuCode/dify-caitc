@@ -1,7 +1,7 @@
 import type { Resolution, TransferMethod, TtsAutoPlay } from '@/types/app'
 import type { FileUploadConfigResponse } from '@/models/common'
 
-export type EnabledOrDisabled = {
+export interface EnabledOrDisabled {
   enabled?: boolean
 }
 
@@ -46,7 +46,7 @@ export type FileUpload = {
   fileUploadConfig?: FileUploadConfigResponse
 } & EnabledOrDisabled & ClickDisabled
 
-export type AnnotationReplyConfig = {
+export interface AnnotationReplyConfig {
   enabled: boolean
   id?: string
   score_threshold?: number
@@ -68,7 +68,7 @@ export enum FeatureEnum {
   annotationReply = 'annotationReply',
 }
 
-export type Features = {
+export interface Features {
   [FeatureEnum.moreLikeThis]?: MoreLikeThis
   [FeatureEnum.opening]?: OpeningStatement
   [FeatureEnum.suggested]?: SuggestedQuestionsAfterAnswer
