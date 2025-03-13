@@ -104,17 +104,17 @@ export default function AppSelector({ isMobile }: IAppSelector) {
                         )}
                         href='/account'
                         target='_self' rel='noopener noreferrer'>
-                        <RiAccountCircleLine className='size-4 flex-shrink-0 text-text-tertiary' />
-                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.account.account')}</div>
-                        <RiArrowRightUpLine className='size-[14px] flex-shrink-0 text-text-tertiary' />
+                        <RiAccountCircleLine className='size-4 shrink-0 text-text-tertiary' />
+                        <div className='grow system-md-regular text-text-secondary px-1'>{t('common.account.account')}</div>
+                        <RiArrowRightUpLine className='size-[14px] shrink-0 text-text-tertiary' />
                       </Link>}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => <div className={classNames(itemClassName,
                         active && 'bg-state-base-hover',
                       )} onClick={() => setShowAccountSettingModal({ payload: 'members' })}>
-                        <RiSettings3Line className='size-4 flex-shrink-0 text-text-tertiary' />
-                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.settings')}</div>
+                        <RiSettings3Line className='size-4 shrink-0 text-text-tertiary' />
+                        <div className='grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.settings')}</div>
                       </div>}
                     </Menu.Item>
                   </div>
@@ -188,8 +188,8 @@ export default function AppSelector({ isMobile }: IAppSelector) {
                           active && 'bg-state-base-hover',
                         )}
                       >
-                        <RiLogoutBoxRLine className='flex-shrink-0 size-4 text-text-tertiary' />
-                        <div className='flex-grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.logout')}</div>
+                        <RiLogoutBoxRLine className='shrink-0 size-4 text-text-tertiary' />
+                        <div className='grow system-md-regular text-text-secondary px-1'>{t('common.userProfile.logout')}</div>
                       </div>
                     </div>}
                   </Menu.Item>
